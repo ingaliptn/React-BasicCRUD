@@ -1,31 +1,62 @@
+import { Component } from "react";
 import "./employers-list-item.css";
 
-const EmployersListItem = (props) => {
-  let classNames = "list-group-item d-flex justify-content-between";
-  if (props.increase) {
-    classNames += ' increase';
+class EmployersListItem extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      increase: props.increase,
+      like: false,
+    };
   }
-  return (
-    <li className={classNames}>
-      <span className="list-group-item-label">
-        {props.name} {props.surname}
-      </span>
-      <input
-        type="text"
-        className="list-group-item-input"
-        defaultValue={props.salary + "$"}
-      />
-      <div className="d-flex justify-content-center align-items-center">
-        <button type="button" className="btn-cookie btn-sm ">
-          <i className="fas fa-cookie"></i>
-        </button>
 
-        <button type="button" className="btn-trash btn-sm ">
-          <i className="fas fa-trash"></i>
-        </button>
-        <i className="fas fa-star"></i>
-      </div>
-    </li>
-  );
-};
+  onIcrease = () => {
+    this.setState(({ increase }) => ({
+      increase: !increase,
+    }));
+  };
+
+  onLike = () => {
+    this.setState(({ like }) => ({
+      like: !like,
+    }));
+  };
+
+  render() {
+    const { name, surname, salary } = this.props;
+    const { increase, like } = this.state;
+    let classNames = "list-group-item d-flex justify-content-between";
+    if (like) {
+      classNames += " like";
+    }
+    if (increase) {
+      classNames += " increase";
+    }
+    return (
+      <li className={classNames}>
+        <span className="list-group-item-label" onClick={this.onLike}>
+          {name} {surname}
+        </span>
+        <input
+          type="text"
+          className="list-group-item-input"
+          defaultValue={salary + "$"}
+        />
+        <div className="d-flex justify-content-center align-items-center">
+          <button
+            type="button"
+            className="btn-cookie btn-sm "
+            onClick={this.onIcrease}>
+            <i className="fas fa-cookie"></i>
+          </button>
+
+          <button type="button" className="btn-trash btn-sm ">
+            <i className="fas fa-trash"></i>
+          </button>
+          <i className="fas fa-star"></i>
+        </div>
+      </li>
+    );
+  }
+}
 export default EmployersListItem;
