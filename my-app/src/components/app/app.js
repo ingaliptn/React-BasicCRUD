@@ -57,20 +57,25 @@ class App extends Component {
   };
 
   addItem = (name, surname, salary) => {
-    const newItem = {
-      name,
-      surname,
-      salary,
-      increase: false,
-      rise: false,
-      id: this.maxId++,
-    };
-    this.setState(({ data }) => {
-      const newArr = [...data, newItem];
-      return {
-        data: newArr,
+    if (name.length >= 3 && surname.length >= 3 && salary.length > 0) {
+      const newItem = {
+        name,
+        surname,
+        salary,
+        increase: false,
+        rise: false,
+        id: this.maxId++,
       };
-    });
+
+      this.setState(({ data }) => {
+        const newArr = [...data, newItem];
+        return {
+          data: newArr,
+        };
+      });
+    } else {
+      alert('Error');
+    }
     return;
   };
 
