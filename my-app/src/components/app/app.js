@@ -11,13 +11,28 @@ class App extends Component {
     super(props);
     this.state = {
       data: [
-        { name: "Oleg", surname: "Rabota", salary: 800, increase: true, id: 1 },
-        { name: "Yan", surname: "Egey", salary: 350, increase: false, id: 2 },
+        {
+          name: "Oleg",
+          surname: "Rabota",
+          salary: 800,
+          increase: true,
+          rise: true,
+          id: 1,
+        },
+        {
+          name: "Yan",
+          surname: "Egey",
+          salary: 350,
+          increase: false,
+          rise: false,
+          id: 2,
+        },
         {
           name: "Bogdan",
           surname: "Nadeviat",
           salary: 1200,
           increase: true,
+          rise: false,
           id: 3,
         },
         {
@@ -25,6 +40,7 @@ class App extends Component {
           surname: "Pirat",
           salary: 950,
           increase: false,
+          rise: false,
           id: 4,
         },
       ],
@@ -46,6 +62,7 @@ class App extends Component {
       surname,
       salary,
       increase: false,
+      rise: false,
       id: this.maxId++,
     };
     this.setState(({ data }) => {
@@ -57,16 +74,34 @@ class App extends Component {
     return;
   };
 
+  onToggleProp = (id, prop) => {
+    this.setState(({ data }) => ({
+      data: data.map((item) => {
+        if (item.id === id) {
+          return { ...item, [prop]: !item[prop] };
+        }
+        return item;
+      }),
+    }));
+  };
+
   render() {
+    const emp = this.state.data.length;
+    const prem = this.state.data.filter((item) => item.increase).length;
+    const rise = this.state.data.filter((item) => item.rise).length;
     return (
       <div className="app">
-        <AppInfo />
+        <AppInfo employers={emp} increased={prem} risePerson={rise} />
 
         <div className="search-panel">
           <SearchPanel />
           <AppFilter />
         </div>
-        <EmployersList data={this.state.data} onDelete={this.deleteItem} />
+        <EmployersList
+          data={this.state.data}
+          onDelete={this.deleteItem}
+          onToggleProp={this.onToggleProp}
+        />
         <EmployersAddForm onAdd={this.addItem} />
       </div>
     );
